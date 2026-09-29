@@ -1,0 +1,57 @@
+You are a medical expert.
+
+You will receive two clinical decision pathways:
+
+- Reference Clinical Pathway: a reference sequence of clinical reasoning steps
+- Candidate Clinical Pathway: a pathway to be evaluated against the reference
+
+Each pathway is provided as a list of strings, where each string represents one clinical decision step.
+
+In the Reference Clinical Pathway, the steps are labeled sequentially from R1 to R{Reference_Pathway_Length}, for a total of {Reference_Pathway_Length} steps.
+In the Candidate Clinical Pathway, the steps are labeled sequentially from C1 to C{Candidate_Pathway_Length}, for a total of {Candidate_Pathway_Length} steps.
+
+Your task is to compare every step in the Reference Clinical Pathway with every step in the Candidate Clinical Pathway and evaluate their consistency.
+
+Evaluation Criteria:
+Consistency (1–5) – the degree to which the Candidate Step represents the same clinical decision or logical judgment as the Reference Step.
+
+Scoring Guide:
+First read and understand each clinical pathway as a whole. The meaning of each step should be interpreted in the context of its pathway.
+For each pair (Ri, Cj):
+Identify the key decision points in the Reference Step (such as symptoms, test results, thresholds, clinical conditions, or required actions) and understand the decision logic expressed in that step within the context of the pathway.
+Then evaluate whether the Candidate Step, when interpreted within its own pathway context, preserves the same decision meaning by covering these key decision points in a way that supports the same decision logic.
+Matching concepts alone is not sufficient for a high score. A high score requires both strong coverage of the Reference Step’s key decision points and the same decision logic.
+
+Score Definitions:
+5: The Candidate Step covers all key decision points in the Reference Step and expresses the same decision logic correctly.
+4: The Candidate Step covers most key decision points in the Reference Step and preserves essentially the same decision logic, missing only minor details.
+3: The Candidate Step overlaps with the Reference Step on some key decision points, but misses important information or only partially preserves the decision logic.
+2: The Candidate Step mentions related concepts or partially related information, but represents a different decision logic, reasoning stage, or type of judgment.
+1: The Candidate Step is unrelated to the key decision points and decision logic in the Reference Step, or expresses a clearly incorrect or contradictory condition.
+
+Output Format:
+For each Reference step Ri, output all corresponding Candidate comparisons in ONE line.
+Within each line, list all pairs (Ri, Cj) using the format, separated by commas:
+R<i>-C1: <score>, R<i>-C2: <score>, ..., R<i>-C{Candidate_Pathway_Length}: <score>
+
+For example:
+R1-C1: 5, R1-C2: 2
+R2-C1: 3, R2-C2: 5
+
+Output Requirements:
+- Output all {Reference_Pathway_Length} × {Candidate_Pathway_Length} step pairs exactly once.
+- Output exactly {Reference_Pathway_Length} lines (one line per Reference step).
+- Each line must contain exactly {Candidate_Pathway_Length} pairs, covering C1 to C{Candidate_Pathway_Length} in order.
+- Each pair must follow the format R<i>-C<j>: <score>.
+- Use only the provided labels: R1 to R{Reference_Pathway_Length} and C1 to C{Candidate_Pathway_Length}. Do not use any label outside these ranges.
+- Within each line, pairs must be separated by a comma.
+- Output only the pairwise scores. Do not include explanations, comments, headings, or additional text.
+- Before producing the final output, verify that all possible Reference–Candidate pairs are included and that no pair is missing or duplicated.
+
+## Reference Clinical Pathway:
+{Reference_Pathway}
+
+## Candidate Clinical Pathway:
+{Candidate_Pathway}
+
+## Your Output:

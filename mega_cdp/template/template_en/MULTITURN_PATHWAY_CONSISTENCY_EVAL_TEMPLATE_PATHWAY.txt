@@ -1,0 +1,58 @@
+You are a medical expert.
+
+You will receive two clinical questioning pathways:
+
+- Reference Clinical Questioning Pathway: a reference sequence of clinician questions used to gather patient information
+- Candidate Clinical Questioning Pathway: a questioning pathway to be evaluated against the reference
+
+Each pathway is provided as a list of strings, where each string represents one clinical question.
+
+In the Reference Clinical Questioning Pathway, the questions are labeled sequentially from R1 to R{Reference_Pathway_Length}, for a total of {Reference_Pathway_Length} questions.
+In the Candidate Clinical Questioning Pathway, the questions are labeled sequentially from C1 to C{Candidate_Pathway_Length}, for a total of {Candidate_Pathway_Length} questions.
+
+Your task is to compare every question in the Reference Clinical Questioning Pathway with every question in the Candidate Clinical Questioning Pathway and evaluate their consistency.
+
+Evaluation Criteria:
+Consistency (1–5) – the degree to which the Candidate Question reflects the same clinical intent, information need, or reasoning purpose as the Reference Question.
+
+Scoring Guide:
+First read and understand each questioning pathway as a whole. Each question should be interpreted in the context of its pathway, including what has already been asked and what information is being pursued.
+For each pair (Ri, Cj):
+Identify the key information targets in the Reference Question (such as symptoms, duration, severity, location, timing, risk factors, medical history, test results, or clarifications being requested), and understand the intent of the question within the pathway.
+Then evaluate whether the Candidate Question, when interpreted within its own pathway context, seeks the same information and serves the same clinical reasoning purpose.
+Consider whether the two questions contribute to the same clinical reasoning process or information-gathering goal within their respective pathways.
+Superficial keyword overlap is not sufficient. A high score requires both alignment in the information being requested and consistency in the clinical reasoning purpose.
+
+Score Definitions:
+5: The Candidate Question covers all key information targets in the Reference Question and expresses the same questioning intent and clinical reasoning purpose.
+4: The Candidate Question covers most key information targets and preserves essentially the same intent and reasoning purpose, missing only minor details.
+3: The Candidate Question overlaps with the Reference Question on some information targets, but misses important aspects or only partially aligns with the intent.
+2: The Candidate Question mentions related concepts or partially related information, but represents a different questioning intent, reasoning stage, or purpose.
+1: The Candidate Question is unrelated to the information targets and intent of the Reference Question, or reflects a clearly different or inappropriate line of questioning.
+
+Output Format:
+For each Reference question Ri, output all corresponding Candidate comparisons in ONE line.
+Within each line, list all pairs (Ri, Cj) using the format, separated by commas:
+R<i>-C1: <score>, R<i>-C2: <score>, ..., R<i>-C{Candidate_Pathway_Length}: <score>
+
+For Example:
+R1-C1: 5, R1-C2: 2
+R2-C1: 3, R2-C2: 5
+
+Output Requirements:
+- Output all {Reference_Pathway_Length} × {Candidate_Pathway_Length} question pairs exactly once.
+- Output exactly {Reference_Pathway_Length} lines (one line per Reference question).
+- Each line must contain exactly {Candidate_Pathway_Length} pairs, covering C1 to C{Candidate_Pathway_Length} in order.
+- ach pair must follow the format R<i>-C<j>: <score>.
+- Use only the provided labels: R1 to R{Reference_Pathway_Length} and C1 to C{Candidate_Pathway_Length}. Do not use any label outside these ranges.
+- Within each line, pairs must be separated by a comma.
+- Output only the pairwise scores. Do not include explanations, comments, headings, or additional text.
+- Before producing the final output, verify that all possible Reference–Candidate pairs are included and that no pair is missing or duplicated.
+
+## Reference Clinical Questioning Pathway:
+{Reference_Pathway}
+
+## Candidate Clinical Questioning Pathway:
+{Candidate_Pathway}
+
+## Your Output:

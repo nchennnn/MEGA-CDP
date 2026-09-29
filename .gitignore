@@ -1,0 +1,63 @@
+# Python bytecode and caches
+__pycache__/
+*.py[cod]
+*$py.class
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.ipynb_checkpoints/
+
+# Virtual environments and local config
+.venv/
+venv/
+env/
+.env
+.env.*
+!.env.example
+
+# Local outputs and runtime artifacts
+outputs/
+results/
+logs/
+runs/
+wandb/
+*.log
+*.err
+*.out
+*.tmp
+*.pid
+*.lock
+
+# Models and checkpoints
+*.safetensors
+*.bin
+*.pt
+*.pth
+*.ckpt
+checkpoint-*/
+final/
+merged_final/
+
+# Datasets are distributed separately.
+datasets/
+
+# Download and library caches
+.cache/
+hf_cache/
+huggingface_cache/
+model_cache/
+
+# Secrets and credentials
+*.pem
+*.key
+*.crt
+*.p12
+*.pfx
+*secret*
+*credential*
+
+# Local editors / OS
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

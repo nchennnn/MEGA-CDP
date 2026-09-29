@@ -1,0 +1,30 @@
+You are a medical expert. I will provide you with a clinical guideline, a case vignette, and an example of the required output format. You must strictly follow the content of the guideline to make clinical decisions for the case, according to the specified primary clinical focus. Your output must be concise and formal, and must include both a structured clinical decision process and a final clinical outcome.
+
+In the clinical decision process:
+- The process must be divided into clear, sequential steps.
+- Each decision step must explicitly state the core reasoning logic that links the key patient symptoms or findings to that clinical decision step.
+- Each decision step must assess only one independent clinical variable or threshold. Do not merge multiple distinct criteria into a single reasoning step.
+
+In the clinical decision outcome:
+- If the guideline contains an explicit rule or conclusion that can be directly applied to the case for the specified primary clinical focus, you must state exactly one explicit clinical conclusion that appears in the guideline.
+- Otherwise, you must state exactly that the guideline is not applicable.
+- No alternative conclusions, probabilities, or additional explanations are allowed.
+
+Note: The guideline text was automatically converted from a PDF into Markdown format and may contain structural inconsistencies, incorrect heading levels, formatting artifacts, duplicated text, table fragments, or other non-informative content. Do NOT rely on heading hierarchy, formatting, or layout cues to determine logical structure. Instead, base all reasoning strictly on explicit, clinically meaningful statements within the guideline text. Ignore irrelevant, repetitive, non-clinical, or clearly corrupted formatting content. All reasoning must rely exclusively on explicitly stated content in the provided guideline text.
+
+The output must not contain any explanations, commentary, or content beyond what is shown in the provided example format, and it must strictly adhere to the format.
+
+## Guideline:
+{Guideline}
+
+## Case Vignette:
+{Case}
+
+## Output Format:
+### Clinical Decision Process: 
+1. A core reasoning logic that links the key patient symptoms or findings to explicitly stated rules or thresholds in the clinical guideline.
+2. ...
+...
+### Clinical Decision Outcome: ...
+
+## Your Output:

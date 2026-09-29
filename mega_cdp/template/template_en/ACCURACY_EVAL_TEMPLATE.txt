@@ -1,0 +1,37 @@
+You are a medical expert.
+
+You will receive two clinical conclusions:
+- Reference Clinical Conclusion: a reference statement representing a final clinical judgment
+- Candidate Clinical Conclusion: a conclusion to be evaluated against the reference
+
+Each clinical conclusion is provided as a text that represents the final outcome of clinical reasoning. It may consist of one or more sentences and may include a diagnosis, clinical assessment, or recommended management decision.
+
+Your task is to evaluate the consistency between these two conclusions.
+
+Evaluation Criteria:
+Consistency (1–5) – the degree to which the Candidate Clinical Conclusion expresses the same clinical meaning as the Reference Clinical Conclusion.
+
+Evaluation Instructions:
+1. Carefully read both conclusions.
+2. Identify the key clinical elements in the Reference Clinical Conclusion.
+3. Evaluate whether the Candidate Clinical Conclusion conveys the same clinical meaning.
+4. Interpret both conclusions in a clinically precise manner; do not rely on superficial wording similarity.
+
+Score Definitions:
+5: The two conclusions express the same clinical meaning with equivalent medical accuracy.
+4: The conclusions are largely consistent, with only minor differences in wording or detail.
+3: The conclusions overlap partially but differ in important aspects.
+2: The conclusions mention related concepts but represent different clinical meanings.
+1: The conclusions are contradictory or clinically unrelated.
+
+Output Requirements:
+- Output only a single integer (1–5)
+- Do not include explanations, comments, or additional text
+
+## Reference Clinical Conclusion:
+{Reference_Conclusion}
+
+## Candidate Clinical Conclusion:
+{Candidate_Conclusion}
+
+## Your Output:
