@@ -9,20 +9,17 @@ from pathlib import Path
 import re
 import threading
 import time
+from typing import Any
 
 
 
-def render_template(template_text: str, vars: dict, strict: bool = True) -> str:
-    """Fill prompt placeholders and optionally reject unresolved variables."""
-    rendered = template_text
-    for key, value in vars.items():
-        rendered = rendered.replace("{" + key + "}", str(value))
-    if strict:
-        import re as _re
-        missing = sorted(set(_re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", rendered)))
-        if missing:
-            raise KeyError(f"Unresolved template variables: {missing}")
-    return rendered
+def render_template(template: str, values: dict[str, Any]) -> str:
+    """Validate template placeholders and insert values without parsing their contents."""
+    pattern = r"\{([A-Za-z_][A-Za-z0-9_]*)\}"
+    missing = sorted(set(re.findall(pattern, template)).difference(values))
+    if missing:
+        raise KeyError(f"Unresolved template variables: {missing}")
+    return re.sub(pattern, lambda match: str(values[match.group(1)]), template)
 from openai import OpenAI
 try:
     from .resume_utils import recover_newer_temp_output
@@ -238,11 +235,10 @@ def generate_consistency_matrix_qwen(
     """Request final-conclusion scores from the judge model."""
     prompt = render_template(
         template_text,
-        vars={
+        values={
             "Reference_Conclusion": reference_conclusion_text,
             "Candidate_Conclusion": candidate_conclusion_text,
         },
-        strict=True,
     )
     message = [{"role": "system", "content": prompt}]
     client = _get_qwen_client()
@@ -758,11 +754,10 @@ def main():
                 second_pathway_text = format_pathway_lines(pred_items, "C")
                 prompt = render_template(
                     template_text,
-                    vars={
+                    values={
                         "Reference_Conclusion": gt_outcome,
                         "Candidate_Conclusion": pred_outcome,
                     },
-                    strict=True,
                 )
                 output_record["text"] = prompt
                 if DEBUG_MODE:
@@ -839,11 +834,10 @@ def main():
             if DEBUG_MODE:
                 output_record["debug"]["prompt"] = render_template(
                     template_text,
-                    vars={
+                    values={
                         "Reference_Conclusion": gt_outcome,
                         "Candidate_Conclusion": pred_outcome,
                     },
-                    strict=True,
                 )
             while len(cur_response_list) < MAX_RETRIES and attempts < MAX_RETRIES * 5:
                 attempts += 1

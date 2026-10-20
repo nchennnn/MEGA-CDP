@@ -9,20 +9,17 @@ from pathlib import Path
 import re
 import threading
 import time
+from typing import Any
 
 
 
-def render_template(template_text: str, vars: dict, strict: bool = True) -> str:
-    """Fill prompt placeholders and optionally reject unresolved variables."""
-    rendered = template_text
-    for key, value in vars.items():
-        rendered = rendered.replace("{" + key + "}", str(value))
-    if strict:
-        import re as _re
-        missing = sorted(set(_re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", rendered)))
-        if missing:
-            raise KeyError(f"Unresolved template variables: {missing}")
-    return rendered
+def render_template(template: str, values: dict[str, Any]) -> str:
+    """Validate template placeholders and insert values without parsing their contents."""
+    pattern = r"\{([A-Za-z_][A-Za-z0-9_]*)\}"
+    missing = sorted(set(re.findall(pattern, template)).difference(values))
+    if missing:
+        raise KeyError(f"Unresolved template variables: {missing}")
+    return re.sub(pattern, lambda match: str(values[match.group(1)]), template)
 from openai import OpenAI
 try:
     from .resume_utils import recover_newer_temp_output
@@ -232,13 +229,12 @@ def generate_consistency_matrix_qwen(
     """Request pathway pairwise scores from the judge model."""
     prompt = render_template(
         template_text,
-        vars={
+        values={
             "Reference_Pathway": first_pathway_text,
             "Candidate_Pathway": second_pathway_text,
             "Reference_Pathway_Length": reference_pathway_length,
             "Candidate_Pathway_Length": candidate_pathway_length,
         },
-        strict=True,
     )
     message = [{"role": "system", "content": prompt}]
     client = _get_qwen_client()
@@ -701,13 +697,12 @@ def main():
                 second_pathway_text = format_pathway_lines(pred_steps, "C")
                 prompt = render_template(
                     template_text,
-                    vars={
+                    values={
                         "Reference_Pathway": first_pathway_text,
                         "Candidate_Pathway": second_pathway_text,
                         "Reference_Pathway_Length": len(gt_steps),
                         "Candidate_Pathway_Length": len(pred_steps),
                     },
-                    strict=True,
                 )
                 output_record["text"] = prompt
                 for _ in range(MAX_RETRIES):

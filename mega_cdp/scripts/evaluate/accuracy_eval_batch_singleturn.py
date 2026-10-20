@@ -48,14 +48,12 @@ def parse_args() -> argparse.Namespace:
 
 
 def render_template(template: str, values: dict[str, Any]) -> str:
-    """Fill prompt placeholders and reject unresolved variables."""
-    output = template
-    for key, value in values.items():
-        output = output.replace("{" + key + "}", str(value))
-    missing = sorted(set(re.findall(r"\{([A-Za-z_][A-Za-z0-9_]*)\}", output)))
+    """Validate template placeholders and insert values without parsing their contents."""
+    pattern = r"\{([A-Za-z_][A-Za-z0-9_]*)\}"
+    missing = sorted(set(re.findall(pattern, template)).difference(values))
     if missing:
         raise KeyError(f"Unresolved template variables: {missing}")
-    return output
+    return re.sub(pattern, lambda match: str(values[match.group(1)]), template)
 
 
 def clean_response(text: str) -> str:
